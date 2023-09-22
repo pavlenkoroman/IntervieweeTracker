@@ -10,7 +10,7 @@ public class WorkflowStepTemplate
     public Guid? UserId { get; private set; }
     public Guid? RoleId { get; private set; }
 
-    private WorkflowStepTemplate(Guid id, string title, int order, Guid? userId, Guid? roleId)
+    public WorkflowStepTemplate(Guid id, string title, int order, Guid? userId, Guid? roleId)
     {
         ArgumentNullException.ThrowIfNull(id);
 

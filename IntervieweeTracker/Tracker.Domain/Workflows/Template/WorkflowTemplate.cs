@@ -10,7 +10,7 @@ public class WorkflowTemplate
     public string Title { get; private set; }
     public IReadOnlyCollection<WorkflowStepTemplate> Steps { get; private set; }
 
-    private WorkflowTemplate(Guid id, string title, IReadOnlyCollection<WorkflowStepTemplate> steps)
+    public WorkflowTemplate(Guid id, string title, IReadOnlyCollection<WorkflowStepTemplate> steps)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(title);

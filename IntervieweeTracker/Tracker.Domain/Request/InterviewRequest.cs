@@ -12,7 +12,7 @@ public class InterviewRequest
     public Workflow Workflow { get; private init; }
     public IReadOnlyCollection<IEvent> Events { get; private init; }
 
-    private InterviewRequest(
+    public InterviewRequest(
         Guid id,
         Guid userId,
         IntervieweeDocument intervieweeDocument,

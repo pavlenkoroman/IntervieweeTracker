@@ -14,7 +14,7 @@ public class WorkflowStep
     public StepStatus Status { get; private set; }
     public DateTime? PlanningDate { get; private set; }
 
-    private WorkflowStep(
+    public WorkflowStep(
         Guid id,
         string title,
         int order,

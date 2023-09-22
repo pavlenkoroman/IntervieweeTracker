@@ -10,7 +10,7 @@ public class Workflow
     public string Title { get; private set; }
     public IReadOnlyCollection<WorkflowStep> Steps { get; private set; }
 
-    private Workflow(Guid id, Guid workflowTemplateId, string title, IReadOnlyCollection<WorkflowStep> steps)
+    public Workflow(Guid id, Guid workflowTemplateId, string title, IReadOnlyCollection<WorkflowStep> steps)
     {
         Id = id;
         WorkflowTemplateId = workflowTemplateId;
