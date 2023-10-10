@@ -1,4 +1,6 @@
-﻿namespace Tracker.Domain.Requests.Events;
+﻿using Tracker.Domain.Events;
+
+namespace Tracker.Domain.Requests.Events;
 
 public sealed class RequestApprovedEvent : IEvent
 {

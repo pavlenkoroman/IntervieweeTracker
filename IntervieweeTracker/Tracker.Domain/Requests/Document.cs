@@ -2,13 +2,13 @@
 
 namespace Tracker.Domain.Requests;
 
-public class IntervieweeDocument
+public class Document
 {
     public string Name { get; private init; }
     public Email Email { get; private init; }
     public Uri Resume { get; private init; }
 
-    public IntervieweeDocument(string name, Email email, Uri resume)
+    public Document(string name, Email email, Uri resume)
     {
         ArgumentNullException.ThrowIfNull(email);
         ArgumentNullException.ThrowIfNull(resume);
@@ -23,8 +23,8 @@ public class IntervieweeDocument
         Resume = resume;
     }
 
-    public static IntervieweeDocument Create(string name, Email email, Uri resume)
+    public static Document Create(string name, Email email, Uri resume)
     {
-        return new IntervieweeDocument(name, email, resume);
+        return new Document(name, email, resume);
     }
 }

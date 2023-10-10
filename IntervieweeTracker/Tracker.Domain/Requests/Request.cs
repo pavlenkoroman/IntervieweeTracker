@@ -1,27 +1,28 @@
-﻿using Tracker.Domain.Requests.Events;
+﻿using Tracker.Domain.Events;
+using Tracker.Domain.Requests.Events;
 using Tracker.Domain.Requests.Workflows;
 using Tracker.Domain.Users;
 
 namespace Tracker.Domain.Requests;
 
-public class InterviewRequest
+public class Request
 {
     public Guid Id { get; private init; }
     public Guid UserId { get; private set; }
-    public IntervieweeDocument IntervieweeDocument { get; private init; }
+    public Document Document { get; private init; }
     public Workflow Workflow { get; private init; }
     public IReadOnlyCollection<IEvent> Events { get; private init; }
 
-    public InterviewRequest(
+    public Request(
         Guid id,
         Guid userId,
-        IntervieweeDocument intervieweeDocument,
+        Document document,
         Workflow workflow,
         IReadOnlyCollection<IEvent> events)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(userId);
-        ArgumentNullException.ThrowIfNull(intervieweeDocument);
+        ArgumentNullException.ThrowIfNull(document);
         ArgumentNullException.ThrowIfNull(workflow);
 
         if (id == Guid.Empty)
@@ -36,16 +37,16 @@ public class InterviewRequest
 
         Id = id;
         UserId = userId;
-        IntervieweeDocument = intervieweeDocument;
+        Document = document;
         Workflow = workflow;
         Events = events;
     }
 
-    public static InterviewRequest Create(Guid userId, IntervieweeDocument inervieweeDocument, Workflow workflow)
+    public static Request Create(Guid userId, Document inervieweeDocument, Workflow workflow)
     {
         var requestId = Guid.NewGuid();
 
-        return new InterviewRequest(requestId,
+        return new Request(requestId,
             userId,
             inervieweeDocument,
             workflow,

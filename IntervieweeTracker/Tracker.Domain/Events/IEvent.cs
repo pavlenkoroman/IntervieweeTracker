@@ -1,4 +1,4 @@
-﻿namespace Tracker.Domain.Requests.Events;
+﻿namespace Tracker.Domain.Events;
 
 public interface IEvent
 {

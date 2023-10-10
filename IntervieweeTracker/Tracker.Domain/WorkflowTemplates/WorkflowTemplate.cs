@@ -36,9 +36,9 @@ public class WorkflowTemplate
         return new WorkflowTemplate(Guid.NewGuid(), title, steps);
     }
 
-    public InterviewRequest CreateRequest(User user, IntervieweeDocument document)
+    public Request CreateRequest(User user, Document document)
     {
-        return InterviewRequest.Create(
+        return Request.Create(
             user.Id,
             document,
             Workflow.Create(
