@@ -1,7 +1,6 @@
-﻿using Tracker.Domain.Enums;
-using Tracker.Domain.UserInfo;
+﻿using Tracker.Domain.UserInfo;
 
-namespace Tracker.Domain.Workflows;
+namespace Tracker.Domain.Request.Workflows;
 
 public class WorkflowStep
 {
@@ -11,7 +10,7 @@ public class WorkflowStep
     public Guid? UserId { get; private set; }
     public Guid? RoleId { get; private set; }
     public string? Comment { get; private set; }
-    public StepStatus Status { get; private set; }
+    public WorkflowStepStatus Status { get; private set; }
     public DateTime? PlanningDate { get; private set; }
 
     public WorkflowStep(
@@ -21,7 +20,7 @@ public class WorkflowStep
         Guid? userId,
         Guid? roleId,
         string? comment,
-        StepStatus status,
+        WorkflowStepStatus status,
         DateTime? planningDate)
     {
         Id = id;
@@ -40,7 +39,7 @@ public class WorkflowStep
         Guid? userId,
         Guid? roleId,
         string? comment,
-        StepStatus status,
+        WorkflowStepStatus status,
         DateTime? planningDate)
     {
         return new WorkflowStep(Guid.NewGuid(), title, order, userId, roleId, comment, status, planningDate);
@@ -58,7 +57,7 @@ public class WorkflowStep
         PlanningDate = newDate;
     }
 
-    public void SetStatus(User user, StepStatus status)
+    public void SetStatus(User user, WorkflowStepStatus status)
     {
         ArgumentNullException.ThrowIfNull(user);
 

@@ -1,7 +1,6 @@
-﻿using Tracker.Domain.Enums;
-using Tracker.Domain.UserInfo;
+﻿using Tracker.Domain.UserInfo;
 
-namespace Tracker.Domain.Workflows;
+namespace Tracker.Domain.Request.Workflows;
 
 public class Workflow
 {
@@ -25,33 +24,33 @@ public class Workflow
 
     public void ApproveStep(User user)
     {
-        var stepToApprove = Steps.FirstOrDefault(step => step.Status == StepStatus.Pending);
+        var stepToApprove = Steps.FirstOrDefault(step => step.Status == WorkflowStepStatus.Pending);
 
         if (stepToApprove is null)
         {
             throw new ArgumentException("Pending steps not found", nameof(stepToApprove));
         }
 
-        stepToApprove.SetStatus(user, StepStatus.Approved);
+        stepToApprove.SetStatus(user, WorkflowStepStatus.Approved);
     }
 
     public void RejectStep(User user)
     {
-        var stepToApprove = Steps.FirstOrDefault(step => step.Status == StepStatus.Pending);
+        var stepToApprove = Steps.FirstOrDefault(step => step.Status == WorkflowStepStatus.Pending);
 
         if (stepToApprove is null)
         {
             throw new ArgumentException("Pending steps not found", nameof(stepToApprove));
         }
 
-        stepToApprove.SetStatus(user, StepStatus.Rejected);
+        stepToApprove.SetStatus(user, WorkflowStepStatus.Rejected);
     }
 
     public void RestartWorkflow(User user)
     {
         foreach (var step in Steps)
         {
-            step.SetStatus(user, StepStatus.Pending);
+            step.SetStatus(user, WorkflowStepStatus.Pending);
         }
     }
 }

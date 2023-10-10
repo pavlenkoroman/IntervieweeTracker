@@ -1,5 +1,5 @@
-﻿using Tracker.Domain.Enums;
-using Tracker.Domain.Request;
+﻿using Tracker.Domain.Request;
+using Tracker.Domain.Request.Workflows;
 using Tracker.Domain.UserInfo;
 
 namespace Tracker.Domain.Workflows.Template;
@@ -51,7 +51,7 @@ public class WorkflowTemplate
                             user.Id,
                             user.RoleId,
                             null,
-                            StepStatus.Pending,
+                            WorkflowStepStatus.Pending,
                             null))
                     .ToList()));
     }

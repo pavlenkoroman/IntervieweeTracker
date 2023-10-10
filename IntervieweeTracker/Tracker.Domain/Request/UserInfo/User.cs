@@ -1,4 +1,4 @@
-﻿using Tracker.Domain.Entities;
+﻿using Tracker.Domain.Request.UserInfo;
 
 namespace Tracker.Domain.UserInfo;
 
