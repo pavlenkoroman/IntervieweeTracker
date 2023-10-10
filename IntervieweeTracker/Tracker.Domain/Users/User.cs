@@ -1,6 +1,4 @@
-﻿using Tracker.Domain.Request.UserInfo;
-
-namespace Tracker.Domain.UserInfo;
+﻿namespace Tracker.Domain.Users;
 
 public class User
 {

@@ -1,9 +1,8 @@
-﻿using Tracker.Domain.Events;
-using Tracker.Domain.Request.Workflows;
-using Tracker.Domain.UserInfo;
-using Tracker.Domain.Workflows;
+﻿using Tracker.Domain.Requests.Events;
+using Tracker.Domain.Requests.Workflows;
+using Tracker.Domain.Users;
 
-namespace Tracker.Domain.Request;
+namespace Tracker.Domain.Requests;
 
 public class InterviewRequest
 {

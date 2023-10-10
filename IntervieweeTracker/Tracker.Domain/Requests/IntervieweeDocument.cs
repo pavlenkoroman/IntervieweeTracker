@@ -1,6 +1,6 @@
-﻿using Tracker.Domain.Request.UserInfo;
+﻿using Tracker.Domain.Users;
 
-namespace Tracker.Domain.Request;
+namespace Tracker.Domain.Requests;
 
 public class IntervieweeDocument
 {

@@ -1,12 +1,12 @@
-﻿namespace Tracker.Domain.Events;
+﻿namespace Tracker.Domain.Requests.Events;
 
-public sealed class RequestApprovedEvent : IEvent
+public sealed class RequestRejectedEvent : IEvent
 {
     public Guid Id { get; }
     public Guid RequestId { get; }
     public string Data { get; }
 
-    public RequestApprovedEvent(Guid id, Guid requestId, string data)
+    public RequestRejectedEvent(Guid id, Guid requestId, string data)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(requestId);
@@ -20,7 +20,7 @@ public sealed class RequestApprovedEvent : IEvent
         {
             throw new ArgumentException("RequestId cannot be empty", nameof(requestId));
         }
-        
+
         if (string.IsNullOrEmpty(data) || string.IsNullOrWhiteSpace(data))
         {
             throw new ArgumentException("Data cannot be null, empty, or whitespace", nameof(data));
@@ -31,8 +31,8 @@ public sealed class RequestApprovedEvent : IEvent
         Data = data;
     }
 
-    public static RequestApprovedEvent Create(Guid requestId, string data)
+    public static RequestRejectedEvent Create(Guid requestId, string data)
     {
-        return new RequestApprovedEvent(Guid.NewGuid(), requestId, data);
+        return new RequestRejectedEvent(Guid.NewGuid(), requestId, data);
     }
 }

@@ -1,6 +1,6 @@
-﻿using Tracker.Domain.UserInfo;
+﻿using Tracker.Domain.Users;
 
-namespace Tracker.Domain.Workflows.Template;
+namespace Tracker.Domain.WorkflowTemplates;
 
 public class WorkflowStepTemplate
 {

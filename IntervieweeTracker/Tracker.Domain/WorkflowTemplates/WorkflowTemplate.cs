@@ -1,8 +1,8 @@
-﻿using Tracker.Domain.Request;
-using Tracker.Domain.Request.Workflows;
-using Tracker.Domain.UserInfo;
+﻿using Tracker.Domain.Requests;
+using Tracker.Domain.Requests.Workflows;
+using Tracker.Domain.Users;
 
-namespace Tracker.Domain.Workflows.Template;
+namespace Tracker.Domain.WorkflowTemplates;
 
 public class WorkflowTemplate
 {

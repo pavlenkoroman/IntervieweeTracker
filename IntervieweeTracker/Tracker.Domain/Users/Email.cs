@@ -1,4 +1,4 @@
-﻿namespace Tracker.Domain.Request.UserInfo;
+﻿namespace Tracker.Domain.Users;
 
 public sealed record Email
 {

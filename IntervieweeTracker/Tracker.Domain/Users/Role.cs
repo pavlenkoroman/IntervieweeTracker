@@ -1,4 +1,4 @@
-﻿namespace Tracker.Domain.UserInfo;
+﻿namespace Tracker.Domain.Users;
 
 public sealed class Role
 {

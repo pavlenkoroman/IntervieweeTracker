@@ -1,4 +1,4 @@
-﻿namespace Tracker.Domain.Request.Workflows;
+﻿namespace Tracker.Domain.Requests.Workflows;
 
 public enum WorkflowStepStatus
 {
