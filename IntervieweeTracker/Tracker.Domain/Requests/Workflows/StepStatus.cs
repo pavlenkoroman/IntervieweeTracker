@@ -1,6 +1,6 @@
 ﻿namespace Tracker.Domain.Requests.Workflows;
 
-public enum WorkflowStepStatus
+public enum StepStatus
 {
     Undefined,
     Pending,

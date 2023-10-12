@@ -2,7 +2,7 @@
 
 namespace Tracker.Domain.Requests.Workflows;
 
-public class WorkflowStep
+public class Step
 {
     public Guid Id { get; private init; }
     public string Title { get; private init; }
@@ -10,17 +10,17 @@ public class WorkflowStep
     public Guid? UserId { get; private set; }
     public Guid? RoleId { get; private set; }
     public string? Comment { get; private set; }
-    public WorkflowStepStatus Status { get; private set; }
+    public StepStatus Status { get; private set; }
     public DateTime? PlanningDate { get; private set; }
 
-    public WorkflowStep(
+    public Step(
         Guid id,
         string title,
         int order,
         Guid? userId,
         Guid? roleId,
         string? comment,
-        WorkflowStepStatus status,
+        StepStatus status,
         DateTime? planningDate)
     {
         Id = id;
@@ -33,16 +33,26 @@ public class WorkflowStep
         PlanningDate = planningDate;
     }
 
-    public static WorkflowStep Create(
+    public static Step CreateByUser(
         string title,
         int order,
         Guid? userId,
-        Guid? roleId,
         string? comment,
-        WorkflowStepStatus status,
+        StepStatus status,
         DateTime? planningDate)
     {
-        return new WorkflowStep(Guid.NewGuid(), title, order, userId, roleId, comment, status, planningDate);
+        return new Step(Guid.NewGuid(), title, order, userId, null, comment, status, planningDate);
+    }
+    
+    public static Step CreateByRole(
+        string title,
+        int order,
+        Guid? roleId,
+        string? comment,
+        StepStatus status,
+        DateTime? planningDate)
+    {
+        return new Step(Guid.NewGuid(), title, order, null, roleId, comment, status, planningDate);
     }
 
     public void UpdateComment(string comment)
@@ -57,7 +67,7 @@ public class WorkflowStep
         PlanningDate = newDate;
     }
 
-    public void SetStatus(User user, WorkflowStepStatus status)
+    public void SetStatus(User user, StepStatus status)
     {
         ArgumentNullException.ThrowIfNull(user);
 

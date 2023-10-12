@@ -2,7 +2,7 @@
 
 namespace Tracker.Domain.WorkflowTemplates;
 
-public class WorkflowStepTemplate
+public class StepTemplate
 {
     public Guid Id { get; private init; }
     public string Title { get; private set; }
@@ -10,7 +10,7 @@ public class WorkflowStepTemplate
     public Guid? UserId { get; private set; }
     public Guid? RoleId { get; private set; }
 
-    public WorkflowStepTemplate(Guid id, string title, int order, Guid? userId, Guid? roleId)
+    public StepTemplate(Guid id, string title, int order, Guid? userId, Guid? roleId)
     {
         ArgumentNullException.ThrowIfNull(id);
 
@@ -31,9 +31,14 @@ public class WorkflowStepTemplate
         RoleId = roleId;
     }
 
-    public static WorkflowStepTemplate Create(string name, int order, Guid? userId, Guid? roleId)
+    public static StepTemplate CreateByUser(string name, int order, Guid? userId)
     {
-        return new WorkflowStepTemplate(Guid.NewGuid(), name, order, userId, roleId);
+        return new StepTemplate(Guid.NewGuid(), name, order, userId, null);
+    }
+
+    public static StepTemplate CreateByRole(string name, int order, Guid? roleId)
+    {
+        return new StepTemplate(Guid.NewGuid(), name, order, null, roleId);
     }
 
     public void UpdateUser(User user)

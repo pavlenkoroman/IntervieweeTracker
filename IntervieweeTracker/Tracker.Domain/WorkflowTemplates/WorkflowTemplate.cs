@@ -8,9 +8,9 @@ public class WorkflowTemplate
 {
     public Guid Id { get; private init; }
     public string Title { get; private set; }
-    public IReadOnlyCollection<WorkflowStepTemplate> Steps { get; private set; }
+    public IReadOnlyCollection<StepTemplate> Steps { get; private set; }
 
-    public WorkflowTemplate(Guid id, string title, IReadOnlyCollection<WorkflowStepTemplate> steps)
+    public WorkflowTemplate(Guid id, string title, IReadOnlyCollection<StepTemplate> steps)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(title);
@@ -31,7 +31,7 @@ public class WorkflowTemplate
         Steps = steps;
     }
 
-    public static WorkflowTemplate Create(string title, IReadOnlyCollection<WorkflowStepTemplate> steps)
+    public static WorkflowTemplate Create(string title, IReadOnlyCollection<StepTemplate> steps)
     {
         return new WorkflowTemplate(Guid.NewGuid(), title, steps);
     }
@@ -45,14 +45,21 @@ public class WorkflowTemplate
                 Id,
                 Title,
                 Steps.Select(stepTemplate =>
-                        WorkflowStep.Create(
+                        stepTemplate.UserId is not null
+                            ? Step.CreateByUser(
                             stepTemplate.Title,
                             stepTemplate.Order,
-                            user.Id,
-                            user.RoleId,
+                            stepTemplate.UserId,
                             null,
-                            WorkflowStepStatus.Pending,
-                            null))
+                            StepStatus.Pending,
+                            null)
+                            : Step.CreateByRole(
+                                    stepTemplate.Title,
+                                    stepTemplate.Order,
+                                    stepTemplate.RoleId,
+                                    null,
+                                    StepStatus.Pending,
+                                    null))
                     .ToList()));
     }
 }
