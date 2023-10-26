@@ -7,7 +7,7 @@ public class User
     public string Name { get; private init; }
     public Email Email { get; private init; }
 
-    private User(Guid id, Guid roleId, string name, Email email)
+    public User(Guid id, Guid roleId, string name, Email email)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(roleId);
