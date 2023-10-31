@@ -79,4 +79,22 @@ public class UserTests
         // Assert
         action.Should().Throw<ArgumentException>().WithMessage("User name cannot be null*");
     }
+
+    [Fact]
+    public void CreateUser_EmptyId_ThrowsArgumentException()
+    {
+        // Arrange
+        var roleId = Guid.NewGuid();
+        var name = "John Doe";
+        var email = _fixture.Create<Email>();
+
+        // Act
+        Action action = () => new User(Guid.Empty, roleId, name, email);
+
+        // Assertion
+        action
+            .Should()
+            .Throw<ArgumentException>()
+            .WithMessage("Id cannot be empty (Parameter 'id')");
+    }
 }

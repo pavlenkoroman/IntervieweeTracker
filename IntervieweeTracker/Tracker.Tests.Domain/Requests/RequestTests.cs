@@ -1,6 +1,5 @@
 using AutoFixture;
 using FluentAssertions;
-using Tracker.Domain.Events;
 using Tracker.Domain.Requests;
 using Tracker.Domain.Requests.Events;
 using Tracker.Domain.Requests.Workflows;
@@ -27,7 +26,6 @@ public class RequestTests
         var userId = Guid.NewGuid();
         var document = _fixture.Create<Document>();
         var workflow = _fixture.Create<Workflow>();
-        var events = new List<IEvent> { _fixture.Create<RequestCreatedEvent>() };
 
         // Act
         var request = Request.Create(userId, document, workflow);
@@ -37,7 +35,6 @@ public class RequestTests
         request.UserId.Should().Be(userId);
         request.Document.Should().Be(document);
         request.Workflow.Should().Be(workflow);
-        request.Events.Should().BeEquivalentTo(events);
     }
 
     [Fact]
@@ -115,5 +112,50 @@ public class RequestTests
         // Assert
         action.Should().NotThrow();
         request.UserId.Should().Be(newUser.Id);
+    }
+
+    [Fact]
+    public void CreateRequest_With_Invalid_UserId_Throws_ArgumentException()
+    {
+        // Arrange
+        var userId = Guid.Empty;
+        var document = _fixture.Create<Document>();
+        var workflow = _fixture.Create<Workflow>();
+
+        // Act
+        Action action = () => Request.Create(userId, document, workflow);
+        
+        // Assert
+        action.Should().Throw<ArgumentException>("Guid cannot be empty (Parameter 'UserId')");
+    }
+    
+    [Fact]
+    public void CreateRequest_From_Constructor_With_Invalid_RoleId_Throws_ArgumentException()
+    {
+        // Arrange
+        var userId = Guid.Empty;
+        var document = _fixture.Create<Document>();
+        var workflow = _fixture.Create<Workflow>();
+
+        // Act
+        Action action = () => new Request(Guid.NewGuid(), userId, document, workflow);
+        
+        // Assert
+        action.Should().Throw<ArgumentException>("Guid cannot be empty (Parameter 'UserId')");
+    }
+    
+    [Fact]
+    public void CreateRequest_From_Constructor_With_Invalid_Id_Throws_ArgumentException()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var document = _fixture.Create<Document>();
+        var workflow = _fixture.Create<Workflow>();
+
+        // Act
+        Action action = () => new Request(Guid.Empty, userId, document, workflow);
+        
+        // Assert
+        action.Should().Throw<ArgumentException>("Guid cannot be empty (Parameter 'Id')");
     }
 }

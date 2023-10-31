@@ -7,18 +7,19 @@ namespace Tracker.Domain.Requests;
 
 public class Request
 {
+    private HashSet<IEvent> _events = new HashSet<IEvent>();
+
     public Guid Id { get; private init; }
     public Guid UserId { get; private set; }
     public Document Document { get; private init; }
     public Workflow Workflow { get; private init; }
-    public IReadOnlyCollection<IEvent> Events { get; private init; }
+    public IReadOnlyCollection<IEvent> Events => _events;
 
     public Request(
         Guid id,
         Guid userId,
         Document document,
-        Workflow workflow,
-        IReadOnlyCollection<IEvent> events)
+        Workflow workflow)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(userId);
@@ -39,31 +40,33 @@ public class Request
         UserId = userId;
         Document = document;
         Workflow = workflow;
-        Events = events;
     }
 
     public static Request Create(Guid userId, Document inervieweeDocument, Workflow workflow)
     {
         var requestId = Guid.NewGuid();
 
-        return new Request(requestId,
-            userId,
-            inervieweeDocument,
-            workflow,
-            new List<IEvent>
-            {
-                RequestCreatedEvent.Create(requestId, $"{DateTime.UtcNow} - interview request added")
-            });
+        var request = new Request(requestId, userId, inervieweeDocument, workflow);
+
+        var onCreateEvent = RequestCreatedEvent.Create(requestId, $"{DateTime.UtcNow} - interview request added");
+        
+        request.AddEvent(onCreateEvent);
+
+        return request;
     }
 
     public void Approve(User user)
     {
         Workflow.ApproveStep(user);
+        var onApproveEvent = RequestRejectedEvent.Create(Id, $"{DateTime.UtcNow} - interview request rejected");
+        AddEvent(onApproveEvent);
     }
 
     public void Reject(User user)
     {
         Workflow.RejectStep(user);
+        var onRejectEvent = RequestRejectedEvent.Create(Id, $"{DateTime.UtcNow} - interview request rejected");
+        AddEvent(onRejectEvent);
     }
 
     public void RestartInterview(User user)
@@ -76,5 +79,10 @@ public class Request
         ArgumentNullException.ThrowIfNull(user);
 
         UserId = user.Id;
+    }
+
+    private void AddEvent(IEvent requestEvent)
+    {
+        _events.Add(requestEvent);
     }
 }

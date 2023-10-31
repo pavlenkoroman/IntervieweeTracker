@@ -83,4 +83,18 @@ public class WorkflowTemplateTests
         request.Workflow.Title.Should().Be(title);
         request.Workflow.Steps.Should().HaveSameCount(steps);
     }
+
+    [Fact]
+    public void WorkflowTemplate_CreateMethod_WithValid_Data()
+    {
+        // Arrange
+        var title = "Sample Workflow";
+        var steps = _fixture.CreateMany<StepTemplate>();
+
+        var workflowTemplate = WorkflowTemplate.Create(title, steps.ToArray());
+        
+        // Assert
+        workflowTemplate.Title.Should().Be(title);
+        workflowTemplate.Steps.Should().BeEquivalentTo(steps);
+    }
 }

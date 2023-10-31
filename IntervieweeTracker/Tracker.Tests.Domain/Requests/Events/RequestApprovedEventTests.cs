@@ -17,7 +17,7 @@ public class RequestApprovedEventTests
     }
 
     [Fact]
-    public void Create_RequestApprovedEvent_Succeeds()
+    public void Constructor_RequestApprovedEvent_Succeeds()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -84,5 +84,22 @@ public class RequestApprovedEventTests
         action
             .Should()
             .Throw<ArgumentException>();
+    }
+    
+    [Fact]
+    public void Create_RequestApprovedEvent_Succeeds()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var requestId = Guid.NewGuid();
+        var data = "Approval data";
+
+        // Act
+        var requestApprovedEvent = RequestApprovedEvent.Create(requestId, data);
+
+        // Assert
+        requestApprovedEvent.Id.Should().NotBeEmpty();
+        requestApprovedEvent.RequestId.Should().NotBeEmpty();
+        requestApprovedEvent.Data.Should().Be(data);
     }
 }
