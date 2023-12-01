@@ -49,7 +49,7 @@ public class Request
         var request = new Request(requestId, userId, inervieweeDocument, workflow);
 
         var onCreateEvent = RequestCreatedEvent.Create(requestId, $"{DateTime.UtcNow} - interview request added");
-        
+
         request.AddEvent(onCreateEvent);
 
         return request;
@@ -58,7 +58,7 @@ public class Request
     public void Approve(User user)
     {
         Workflow.ApproveStep(user);
-        var onApproveEvent = RequestRejectedEvent.Create(Id, $"{DateTime.UtcNow} - interview request rejected");
+        var onApproveEvent = RequestRejectedEvent.Create(Id, $"{DateTime.UtcNow} - interview request step approved");
         AddEvent(onApproveEvent);
     }
 

@@ -62,4 +62,14 @@ public class WorkflowTemplate
                                     null))
                     .ToList()));
     }
+
+    public void UpdateTitle(string title)
+    {
+        Title = title;
+    }
+
+    public void UpdateSteps(IReadOnlyCollection<StepTemplate> steps)
+    {
+        Steps = steps;
+    }
 }
