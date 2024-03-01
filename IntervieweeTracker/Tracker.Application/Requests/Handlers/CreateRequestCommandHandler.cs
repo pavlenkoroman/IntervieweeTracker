@@ -17,11 +17,17 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
 
     public async Task<Guid> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
     {
-        var workflowTemplate = await _tenant.WorkflowTemplates.GetById(request.WorkflowTemplateId, cancellationToken);
-        var user = await _tenant.Users.GetById(request.UserId, cancellationToken);
-        var interviewRequest = workflowTemplate.CreateRequest(user, request.Document);
+        var workflowTemplate = await _tenant.WorkflowTemplates
+            .GetByIds(new[] { request.WorkflowTemplateId }, cancellationToken)
+            .ConfigureAwait(false);
 
-        _tenant.Requests.Create(interviewRequest);
+        var user = await _tenant.Users
+            .GetByIds(new[] { request.UserId }, cancellationToken)
+            .ConfigureAwait(false);
+
+        var interviewRequest = workflowTemplate.Single().CreateRequest(user.Single(), request.Document);
+
+        await _tenant.Requests.Create(interviewRequest);
 
         await _tenant.CommitAsync(cancellationToken);
 

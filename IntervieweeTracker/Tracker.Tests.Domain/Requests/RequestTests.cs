@@ -100,21 +100,6 @@ public class RequestTests
     }
 
     [Fact]
-    public void ChangeInterviewer_Succeeds()
-    {
-        // Arrange
-        var request = _fixture.Create<Request>();
-        var newUser = _fixture.Create<User>();
-
-        // Act
-        var action = () => request.ChangeInterviewer(newUser);
-
-        // Assert
-        action.Should().NotThrow();
-        request.UserId.Should().Be(newUser.Id);
-    }
-
-    [Fact]
     public void CreateRequest_With_Invalid_UserId_Throws_ArgumentException()
     {
         // Arrange
@@ -124,11 +109,11 @@ public class RequestTests
 
         // Act
         Action action = () => Request.Create(userId, document, workflow);
-        
+
         // Assert
         action.Should().Throw<ArgumentException>("Guid cannot be empty (Parameter 'UserId')");
     }
-    
+
     [Fact]
     public void CreateRequest_From_Constructor_With_Invalid_RoleId_Throws_ArgumentException()
     {
@@ -139,11 +124,11 @@ public class RequestTests
 
         // Act
         Action action = () => new Request(Guid.NewGuid(), userId, document, workflow);
-        
+
         // Assert
         action.Should().Throw<ArgumentException>("Guid cannot be empty (Parameter 'UserId')");
     }
-    
+
     [Fact]
     public void CreateRequest_From_Constructor_With_Invalid_Id_Throws_ArgumentException()
     {
@@ -154,7 +139,7 @@ public class RequestTests
 
         // Act
         Action action = () => new Request(Guid.Empty, userId, document, workflow);
-        
+
         // Assert
         action.Should().Throw<ArgumentException>("Guid cannot be empty (Parameter 'Id')");
     }

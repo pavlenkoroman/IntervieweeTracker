@@ -20,6 +20,8 @@ public class GetRequestByIdQueryHandler : IRequestHandler<GetRequestByIdQuery, R
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _tenant.Requests.GetById(request.RequestId, cancellationToken);
+        var requestsCollection = await _tenant.Requests.GetByIds(new[] { request.RequestId }, cancellationToken);
+
+        return requestsCollection.Single();
     }
 }

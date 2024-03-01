@@ -22,6 +22,9 @@ public class GetWorkflowTemplateByIdQueryHandler : IRequestHandler<GetWorkflowTe
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _tenant.WorkflowTemplates.GetById(request.WorkflowTemplateId, cancellationToken);
+        var workflowTemplateCollection =
+            await _tenant.WorkflowTemplates.GetByIds(new[] { request.WorkflowTemplateId }, cancellationToken);
+
+        return workflowTemplateCollection.Single();
     }
 }

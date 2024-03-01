@@ -20,6 +20,10 @@ public class GetStepByIdQueryHandler : IRequestHandler<GetStepByIdQuery, StepTem
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _tenant.StepTemplates.GetById(request.StepId, cancellationToken);
+        var steps = await _tenant.StepTemplates
+            .GetByIds(new[] { request.StepId }, cancellationToken)
+            .ConfigureAwait(false);
+
+        return steps.First();
     }
 }

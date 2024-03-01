@@ -19,10 +19,16 @@ public class ApproveRequestStepCommandHandler : IRequestHandler<ApproveRequestSt
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var interviewRequest = await _tenant.Requests.GetById(request.RequestId, cancellationToken);
-        var user = await _tenant.Users.GetById(request.UserId, cancellationToken);
+        var interviewRequest = await _tenant.Requests.GetByIds(
+                new[] { request.RequestId },
+                cancellationToken)
+            .ConfigureAwait(false);
 
-        interviewRequest.Approve(user);
+        var user = await _tenant.Users
+            .GetByIds(new[] { request.UserId }, cancellationToken)
+            .ConfigureAwait(false);
+
+        interviewRequest.Single().Approve(user.Single());
         await _tenant.CommitAsync(cancellationToken);
     }
 }

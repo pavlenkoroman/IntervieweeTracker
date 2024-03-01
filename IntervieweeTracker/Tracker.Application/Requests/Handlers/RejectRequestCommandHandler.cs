@@ -19,10 +19,13 @@ public class RejectRequestCommandHandler : IRequestHandler<RejectRequestCommand>
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var interviewRequest = await _tenant.Requests.GetById(request.RequestId, cancellationToken);
-        var user = await _tenant.Users.GetById(request.UserId, cancellationToken);
+        var interviewRequestCollection = await _tenant.Requests
+            .GetByIds(new[] { request.RequestId }, cancellationToken)
+            .ConfigureAwait(false);
 
-        interviewRequest.Reject(user);
+        var userCollection = await _tenant.Users.GetByIds(new[] { request.UserId }, cancellationToken);
+
+        interviewRequestCollection.Single().Reject(userCollection.Single());
         await _tenant.CommitAsync(cancellationToken);
     }
 }

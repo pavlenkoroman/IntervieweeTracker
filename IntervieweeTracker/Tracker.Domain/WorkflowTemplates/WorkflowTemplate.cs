@@ -47,19 +47,19 @@ public class WorkflowTemplate
                 Steps.Select(stepTemplate =>
                         stepTemplate.UserId is not null
                             ? Step.CreateByUser(
-                            stepTemplate.Title,
-                            stepTemplate.Order,
-                            stepTemplate.UserId,
-                            null,
-                            StepStatus.Pending,
-                            null)
+                                stepTemplate.Title,
+                                stepTemplate.Order,
+                                stepTemplate.UserId,
+                                null,
+                                StepStatus.Pending,
+                                null)
                             : Step.CreateByRole(
-                                    stepTemplate.Title,
-                                    stepTemplate.Order,
-                                    stepTemplate.RoleId,
-                                    null,
-                                    StepStatus.Pending,
-                                    null))
+                                stepTemplate.Title,
+                                stepTemplate.Order,
+                                stepTemplate.RoleId,
+                                null,
+                                StepStatus.Pending,
+                                null))
                     .ToList()));
     }
 

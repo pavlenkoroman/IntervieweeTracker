@@ -24,7 +24,10 @@ public class UpdateWorkflowTemplateCommandHandler : IRequestHandler<UpdateWorkfl
             request.StepTemplateIds,
             cancellationToken);
 
-        var workflowTemplate = await _tenant.WorkflowTemplates.GetById(request.WorkflowTemplateId, cancellationToken);
+        var workflowTemplateCollection =
+            await _tenant.WorkflowTemplates.GetByIds(new[] { request.WorkflowTemplateId }, cancellationToken);
+
+        var workflowTemplate = workflowTemplateCollection.Single();
 
         if (!string.IsNullOrEmpty(request.Title))
         {
