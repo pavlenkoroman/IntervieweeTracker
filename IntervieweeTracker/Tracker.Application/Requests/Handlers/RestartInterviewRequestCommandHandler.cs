@@ -1,10 +1,9 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Requests.Commands;
 
 namespace Tracker.Application.Requests.Handlers;
 
-public class RestartInterviewRequestCommandHandler : IRequestHandler<RestartInterviewRequestCommand>
+public class RestartInterviewRequestCommandHandler
 {
     private readonly ITenantRepository _tenant;
 

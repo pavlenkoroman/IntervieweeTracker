@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.WorkflowTemplates.Commands;
 using Tracker.Domain.WorkflowTemplates;
 
 namespace Tracker.Application.WorkflowTemplates.Handlers;
 
-public sealed record CreateWorkflowTemplateCommandHandler : IRequestHandler<CreateWorkflowTemplateCommand, Guid>
+public sealed record CreateWorkflowTemplateCommandHandler
 {
     private readonly ITenantRepository _tenant;
 
@@ -26,7 +25,7 @@ public sealed record CreateWorkflowTemplateCommandHandler : IRequestHandler<Crea
 
         var workflowTemplate = WorkflowTemplate.Create(request.Title, stepTemplates);
 
-        _tenant.WorkflowTemplates.Create(workflowTemplate);
+        await _tenant.WorkflowTemplates.Create(workflowTemplate);
 
         await _tenant.CommitAsync(cancellationToken);
 

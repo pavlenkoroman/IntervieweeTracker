@@ -1,10 +1,9 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Requests.Commands;
 
 namespace Tracker.Application.Requests.Handlers;
 
-public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand, Guid>
+public class CreateRequestCommandHandler
 {
     private readonly ITenantRepository _tenant;
 

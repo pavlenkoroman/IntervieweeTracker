@@ -1,10 +1,9 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Requests.Commands;
 
 namespace Tracker.Application.Requests.Handlers;
 
-public class ApproveRequestStepCommandHandler : IRequestHandler<ApproveRequestStepCommand>
+public class ApproveRequestStepCommandHandler
 {
     private readonly ITenantRepository _tenant;
 

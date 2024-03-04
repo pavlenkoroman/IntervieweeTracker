@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Roles.Commands;
 using Tracker.Domain.Users;
 
 namespace Tracker.Application.Roles.Handlers;
 
-public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Guid>
+public class CreateRoleCommandHandler
 {
     private readonly ITenantRepository _tenant;
 

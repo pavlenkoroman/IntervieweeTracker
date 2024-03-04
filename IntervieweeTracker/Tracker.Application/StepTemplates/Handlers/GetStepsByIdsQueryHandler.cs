@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.StepTemplates.Queries;
 using Tracker.Domain.WorkflowTemplates;
 
 namespace Tracker.Application.StepTemplates.Handlers;
 
-public class GetStepsByIdsQueryHandler : IRequestHandler<GetStepsByIdsQuery, IReadOnlyCollection<StepTemplate>>
+public class GetStepsByIdsQueryHandler
 {
     private readonly ITenantRepository _tenant;
 

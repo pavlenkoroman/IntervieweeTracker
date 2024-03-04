@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Users.Queries;
 using Tracker.Domain.Users;
 
 namespace Tracker.Application.Users.Handlers;
 
-public class LoginQueryHandler : IRequestHandler<LoginQuery, Guid>
+public class LoginQueryHandler
 {
     private readonly ITenantRepository _tenant;
 

@@ -1,4 +1,3 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.WorkflowTemplates.Queries;
 using Tracker.Domain.WorkflowTemplates;
@@ -6,7 +5,6 @@ using Tracker.Domain.WorkflowTemplates;
 namespace Tracker.Application.WorkflowTemplates.Handlers;
 
 public class GetAllWorkflowTemplatesQueryHandler
-    : IRequestHandler<GetAllWorkflowTemplatesQuery, IReadOnlyCollection<WorkflowTemplate>>
 {
     private readonly ITenantRepository _tenant;
 

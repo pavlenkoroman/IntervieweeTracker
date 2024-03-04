@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Requests.Queries;
 using Tracker.Domain.Requests;
 
 namespace Tracker.Application.Requests.Handlers;
 
-public class GetRequestsByIdsQueryHandler : IRequestHandler<GetRequestsByIdsQuery, IReadOnlyCollection<Request>>
+public class GetRequestsByIdsQueryHandler
 {
     private readonly ITenantRepository _tenant;
 

@@ -1,7 +1,6 @@
 using System.Net.Mail;
 using AutoFixture;
 using Tracker.Domain.Requests;
-using Tracker.Domain.Requests.Events;
 using Tracker.Domain.Requests.Workflows;
 using Tracker.Domain.Users;
 

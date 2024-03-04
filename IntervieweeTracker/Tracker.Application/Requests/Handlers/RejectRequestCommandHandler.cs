@@ -1,10 +1,9 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Requests.Commands;
 
 namespace Tracker.Application.Requests.Handlers;
 
-public class RejectRequestCommandHandler : IRequestHandler<RejectRequestCommand>
+public class RejectRequestCommandHandler
 {
     private readonly ITenantRepository _tenant;
 

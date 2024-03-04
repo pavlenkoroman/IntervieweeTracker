@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Users.Commands;
 using Tracker.Domain.Users;
 
 namespace Tracker.Application.Users.Handlers;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
+public class RegisterUserCommandHandler
 {
     private readonly ITenantRepository _tenant;
 

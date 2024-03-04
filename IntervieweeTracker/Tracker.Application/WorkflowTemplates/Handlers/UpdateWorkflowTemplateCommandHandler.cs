@@ -1,11 +1,9 @@
-using MediatR;
 using Tracker.Application.Repositories;
-using Tracker.Application.Requests.Commands;
 using Tracker.Application.WorkflowTemplates.Commands;
 
 namespace Tracker.Application.WorkflowTemplates.Handlers;
 
-public class UpdateWorkflowTemplateCommandHandler : IRequestHandler<UpdateWorkflowTemplateCommand, Guid>
+public class UpdateWorkflowTemplateCommandHandler
 {
     private readonly ITenantRepository _tenant;
 

@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Users.Queries;
 using Tracker.Domain.Users;
 
 namespace Tracker.Application.Users.Handlers;
 
-public class GetUserByEmailQueryHandler : IRequestHandler<GetUserByEmailQuery, User?>
+public class GetUserByEmailQueryHandler
 {
     private readonly ITenantRepository _tenant;
 

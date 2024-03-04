@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.WorkflowTemplates.Queries;
 using Tracker.Domain.WorkflowTemplates;
 
 namespace Tracker.Application.WorkflowTemplates.Handlers;
 
-public class GetWorkflowTemplateByIdQueryHandler : IRequestHandler<GetWorkflowTemplateByIdQuery, WorkflowTemplate>
+public class GetWorkflowTemplateByIdQueryHandler
 {
     private readonly ITenantRepository _tenant;
 

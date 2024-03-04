@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.Roles.Queries;
 using Tracker.Domain.Users;
 
 namespace Tracker.Application.Roles.Handlers;
 
-public class GetAllRolesQueryHandler : IRequestHandler<GetAllRolesQuery, IReadOnlyCollection<Role>>
+public class GetAllRolesQueryHandler
 {
     private readonly ITenantRepository _tenant;
 

@@ -1,11 +1,10 @@
-using MediatR;
 using Tracker.Application.Repositories;
 using Tracker.Application.StepTemplates.Commands;
 using Tracker.Domain.WorkflowTemplates;
 
 namespace Tracker.Application.StepTemplates.Handlers;
 
-public class CreateStepCommandHandler : IRequestHandler<CreateStepTemplateCommand>
+public class CreateStepCommandHandler
 {
     private readonly ITenantRepository _tenant;
 
