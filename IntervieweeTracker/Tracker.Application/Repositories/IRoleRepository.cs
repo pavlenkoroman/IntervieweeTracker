@@ -4,7 +4,7 @@ namespace Tracker.Application.Repositories;
 
 public interface IRoleRepository
 {
-    void Create(Role role);
-    Task<Role> GetById(Guid roleId, CancellationToken cancellationToken);
+    Task Create(Role role);
+    Task<IReadOnlyCollection<Role>> GetByIds(IReadOnlyCollection<Guid> roleIds, CancellationToken cancellationToken);
     Task<IReadOnlyCollection<Role>> GetAll(CancellationToken cancellationToken);
 }

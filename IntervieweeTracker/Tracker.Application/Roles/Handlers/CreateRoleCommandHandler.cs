@@ -22,7 +22,8 @@ public class CreateRoleCommandHandler : IRequestHandler<CreateRoleCommand, Guid>
 
         var role = Role.Create(request.Title);
 
-        _tenant.Roles.Create(role);
+        await _tenant.Roles.Create(role);
+
         await _tenant.CommitAsync(cancellationToken);
 
         return role.Id;

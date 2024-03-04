@@ -97,4 +97,34 @@ public class WorkflowTemplateTests
         workflowTemplate.Title.Should().Be(title);
         workflowTemplate.Steps.Should().BeEquivalentTo(steps);
     }
+
+    [Fact]
+    public void WorkflowTemplate_UpdateTitle()
+    {
+        // Arrange
+        var title = "valid title";
+        var titleForUpdate = "valid update title";
+        var workflowTemplate = WorkflowTemplate.Create(title, _fixture.CreateMany<StepTemplate>().ToArray());
+
+        // Act
+        workflowTemplate.UpdateTitle(titleForUpdate);
+
+        // Assert
+        workflowTemplate.Title.Should().Be(titleForUpdate);
+    }
+    
+    [Fact]
+    public void WorkflowTemplate_UpdateSteps()
+    {
+        // Arrange
+        var title = "valid title";
+        var validStepsCollection = _fixture.CreateMany<StepTemplate>().ToArray();
+        var workflowTemplate = WorkflowTemplate.Create(title, _fixture.CreateMany<StepTemplate>().ToArray());
+
+        // Act
+        workflowTemplate.UpdateSteps(validStepsCollection);
+
+        // Assert
+        workflowTemplate.Steps.Should().BeEquivalentTo(validStepsCollection);
+    }
 }

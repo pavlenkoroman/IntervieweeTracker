@@ -74,13 +74,6 @@ public class Request
         Workflow.RestartWorkflow(user);
     }
 
-    public void ChangeInterviewer(User user)
-    {
-        ArgumentNullException.ThrowIfNull(user);
-
-        UserId = user.Id;
-    }
-
     private void AddEvent(IEvent requestEvent)
     {
         _events.Add(requestEvent);

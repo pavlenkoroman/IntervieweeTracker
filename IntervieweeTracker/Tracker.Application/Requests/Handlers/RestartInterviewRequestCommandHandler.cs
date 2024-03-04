@@ -19,10 +19,10 @@ public class RestartInterviewRequestCommandHandler : IRequestHandler<RestartInte
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var interviewRequest = await _tenant.Requests.GetById(request.RequestId, cancellationToken);
-        var user = await _tenant.Users.GetById(request.UserId, cancellationToken);
+        var interviewRequests = await _tenant.Requests.GetByIds(new[] { request.RequestId }, cancellationToken);
+        var users = await _tenant.Users.GetByIds(new[] { request.UserId }, cancellationToken);
 
-        interviewRequest.RestartInterview(user);
+        interviewRequests.Single().RestartInterview(users.Single());
         await _tenant.CommitAsync(cancellationToken);
     }
 }

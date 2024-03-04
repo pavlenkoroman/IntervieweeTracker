@@ -20,6 +20,7 @@ public class GetRoleByIdQueryHandler : IRequestHandler<GetRoleByIdQuery, Role>
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _tenant.Roles.GetById(request.RoleId, cancellationToken);
+        var rolesCollection = await _tenant.Roles.GetByIds(new[] { request.RoleId }, cancellationToken);
+        return rolesCollection.Single();
     }
 }

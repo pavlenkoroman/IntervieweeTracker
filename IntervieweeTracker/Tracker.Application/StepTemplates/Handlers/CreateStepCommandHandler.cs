@@ -35,7 +35,7 @@ public class CreateStepCommandHandler : IRequestHandler<CreateStepTemplateComman
                 nameof(request.UserId) + " " + nameof(request.RoleId));
         }
 
-        _tenant.StepTemplates.Create(stepTemplate);
+        await _tenant.StepTemplates.Create(stepTemplate);
 
         await _tenant.CommitAsync(cancellationToken);
     }
