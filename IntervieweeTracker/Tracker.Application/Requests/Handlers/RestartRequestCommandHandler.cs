@@ -3,18 +3,18 @@ using Tracker.Application.Requests.Commands;
 
 namespace Tracker.Application.Requests.Handlers;
 
-public class RestartInterviewRequestCommandHandler
+public class RestartRequestCommandHandler
 {
     private readonly ITenantRepository _tenant;
 
-    public RestartInterviewRequestCommandHandler(ITenantRepository tenant)
+    public RestartRequestCommandHandler(ITenantRepository tenant)
     {
         ArgumentNullException.ThrowIfNull(tenant);
 
         _tenant = tenant;
     }
 
-    public async Task Handle(RestartInterviewRequestCommand request, CancellationToken cancellationToken)
+    public async Task Handle(RestartRequestCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 

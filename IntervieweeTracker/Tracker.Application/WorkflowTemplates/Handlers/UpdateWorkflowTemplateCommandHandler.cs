@@ -34,7 +34,7 @@ public class UpdateWorkflowTemplateCommandHandler
 
         workflowTemplate.UpdateSteps(steps);
 
-        await _tenant.WorkflowTemplates.Update(workflowTemplate);
+        await _tenant.WorkflowTemplates.Update(workflowTemplate, cancellationToken);
 
         await _tenant.CommitAsync(cancellationToken);
 

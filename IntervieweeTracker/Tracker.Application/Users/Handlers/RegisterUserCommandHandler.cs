@@ -19,7 +19,7 @@ public class RegisterUserCommandHandler
     {
         ArgumentNullException.ThrowIfNull(request);
         var user = User.Create(request.RoleId, request.Name, new Email(request.Email));
-        _tenant.Users.Create(user);
+        await _tenant.Users.Create(user, cancellationToken);
 
         await _tenant.CommitAsync(cancellationToken);
 

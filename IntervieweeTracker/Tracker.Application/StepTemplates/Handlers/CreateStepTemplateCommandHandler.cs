@@ -4,16 +4,16 @@ using Tracker.Domain.WorkflowTemplates;
 
 namespace Tracker.Application.StepTemplates.Handlers;
 
-public class CreateStepCommandHandler
+public class CreateStepTemplateCommandHandler
 {
     private readonly ITenantRepository _tenant;
 
-    public CreateStepCommandHandler(ITenantRepository tenant)
+    public CreateStepTemplateCommandHandler(ITenantRepository tenant)
     {
         _tenant = tenant;
     }
 
-    public async Task Handle(CreateStepTemplateCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateStepTemplateCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
@@ -21,11 +21,11 @@ public class CreateStepCommandHandler
 
         if (request.UserId != null)
         {
-            stepTemplate = StepTemplate.CreateByUser(request.Title, request.Order, request.UserId);
+            stepTemplate = StepTemplate.CreateByUser(request.Title, request.Order, (Guid)request.UserId);
         }
         else if (request.RoleId != null)
         {
-            stepTemplate = StepTemplate.CreateByRole(request.Title, request.Order, request.RoleId);
+            stepTemplate = StepTemplate.CreateByRole(request.Title, request.Order, (Guid)request.RoleId);
         }
         else
         {
@@ -34,8 +34,10 @@ public class CreateStepCommandHandler
                 nameof(request.UserId) + " " + nameof(request.RoleId));
         }
 
-        await _tenant.StepTemplates.Create(stepTemplate);
+        await _tenant.StepTemplates.Create(stepTemplate, cancellationToken);
 
         await _tenant.CommitAsync(cancellationToken);
+
+        return stepTemplate.Id;
     }
 }

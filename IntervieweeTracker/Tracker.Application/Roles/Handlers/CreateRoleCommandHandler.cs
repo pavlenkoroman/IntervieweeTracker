@@ -21,7 +21,7 @@ public class CreateRoleCommandHandler
 
         var role = Role.Create(request.Title);
 
-        await _tenant.Roles.Create(role);
+        await _tenant.Roles.Create(role, cancellationToken);
 
         await _tenant.CommitAsync(cancellationToken);
 

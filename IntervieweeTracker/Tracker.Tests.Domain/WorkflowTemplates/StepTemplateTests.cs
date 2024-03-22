@@ -25,7 +25,7 @@ public class StepTemplateTests
         // Arrange
         var title = "Test Title";
         var order = 1;
-        Guid? roleId = Guid.NewGuid();
+        var roleId = Guid.NewGuid();
 
         // Act
         var stepTemplate = StepTemplate.CreateByRole(title, order, roleId);
@@ -44,7 +44,7 @@ public class StepTemplateTests
         // Arrange
         var title = "Test Title";
         var order = 1;
-        Guid? userId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
 
         // Act
         var stepTemplate = StepTemplate.CreateByUser(title, order, userId);

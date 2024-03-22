@@ -2,10 +2,10 @@ namespace Tracker.Application.Repositories;
 
 public interface ITenantRepository
 {
-    IUserRepository Users { get; init; }
-    IRoleRepository Roles { get; init; }
-    IRequestRepository Requests { get; init; }
-    IWorkflowTemplateRepository WorkflowTemplates { get; init; }
-    IStepTemplateRepository StepTemplates { get; init; }
+    IUserRepository Users { get; }
+    IRoleRepository Roles { get; }
+    IRequestRepository Requests { get; }
+    IWorkflowTemplateRepository WorkflowTemplates { get; }
+    IStepTemplateRepository StepTemplates { get; }
     Task CommitAsync(CancellationToken cancellationToken);
 }

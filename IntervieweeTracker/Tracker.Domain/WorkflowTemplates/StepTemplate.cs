@@ -31,12 +31,12 @@ public class StepTemplate
         RoleId = roleId;
     }
 
-    public static StepTemplate CreateByUser(string name, int order, Guid? userId)
+    public static StepTemplate CreateByUser(string name, int order, Guid userId)
     {
         return new StepTemplate(Guid.NewGuid(), name, order, userId, null);
     }
 
-    public static StepTemplate CreateByRole(string name, int order, Guid? roleId)
+    public static StepTemplate CreateByRole(string name, int order, Guid roleId)
     {
         return new StepTemplate(Guid.NewGuid(), name, order, null, roleId);
     }

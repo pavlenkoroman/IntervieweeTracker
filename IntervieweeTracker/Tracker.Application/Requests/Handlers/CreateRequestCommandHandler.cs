@@ -26,7 +26,7 @@ public class CreateRequestCommandHandler
 
         var interviewRequest = workflowTemplate.Single().CreateRequest(user.Single(), request.Document);
 
-        await _tenant.Requests.Create(interviewRequest);
+        await _tenant.Requests.Create(interviewRequest, cancellationToken);
 
         await _tenant.CommitAsync(cancellationToken);
 

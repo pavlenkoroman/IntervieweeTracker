@@ -4,8 +4,8 @@ namespace Tracker.Application.Repositories;
 
 public interface IWorkflowTemplateRepository
 {
-    Task Create(WorkflowTemplate workflowTemplate);
-    Task Update(WorkflowTemplate workflowTemplate);
+    Task Create(WorkflowTemplate workflowTemplate, CancellationToken cancellationToken);
+    Task Update(WorkflowTemplate workflowTemplate, CancellationToken cancellationToken);
 
     Task<IReadOnlyCollection<WorkflowTemplate>> GetByIds(
         IReadOnlyCollection<Guid> workflowTemplateIds,

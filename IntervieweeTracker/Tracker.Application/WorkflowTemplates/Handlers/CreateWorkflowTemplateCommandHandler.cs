@@ -25,7 +25,7 @@ public sealed record CreateWorkflowTemplateCommandHandler
 
         var workflowTemplate = WorkflowTemplate.Create(request.Title, stepTemplates);
 
-        await _tenant.WorkflowTemplates.Create(workflowTemplate);
+        await _tenant.WorkflowTemplates.Create(workflowTemplate, cancellationToken);
 
         await _tenant.CommitAsync(cancellationToken);
 

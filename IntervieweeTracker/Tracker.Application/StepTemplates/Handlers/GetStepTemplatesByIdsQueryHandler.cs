@@ -4,11 +4,11 @@ using Tracker.Domain.WorkflowTemplates;
 
 namespace Tracker.Application.StepTemplates.Handlers;
 
-public class GetStepsByIdsQueryHandler
+public class GetStepTemplatesByIdsQueryHandler
 {
     private readonly ITenantRepository _tenant;
 
-    public GetStepsByIdsQueryHandler(ITenantRepository tenant)
+    public GetStepTemplatesByIdsQueryHandler(ITenantRepository tenant)
     {
         ArgumentNullException.ThrowIfNull(tenant);
 
