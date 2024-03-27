@@ -1,4 +1,6 @@
-﻿namespace Tracker.Domain.Users;
+﻿using BCryptNet = BCrypt.Net.BCrypt;
+
+namespace Tracker.Domain.Users;
 
 public class User
 {
@@ -6,8 +8,9 @@ public class User
     public Guid RoleId { get; private set; }
     public string Name { get; private init; }
     public Email Email { get; private init; }
+    public string PasswordHash { get; set; }
 
-    public User(Guid id, Guid roleId, string name, Email email)
+    public User(Guid id, Guid roleId, string name, Email email, string password)
     {
         ArgumentNullException.ThrowIfNull(id);
         ArgumentNullException.ThrowIfNull(roleId);
@@ -32,10 +35,16 @@ public class User
         RoleId = roleId;
         Name = name;
         Email = email;
+        PasswordHash = BCryptNet.EnhancedHashPassword(password);
     }
 
-    public static User Create(Guid roleId, string name, Email email)
+    public bool VerifyPassword(string password)
     {
-        return new User(Guid.NewGuid(), roleId, name, email);
+        return BCryptNet.EnhancedVerify(password, PasswordHash);
+    }
+
+    public static User Create(Guid roleId, string name, Email email, string password)
+    {
+        return new User(Guid.NewGuid(), roleId, name, email, password);
     }
 }

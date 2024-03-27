@@ -156,7 +156,8 @@ public class WorkflowTests
                     Guid.NewGuid(), 
                     Guid.NewGuid(), 
                     "asd", 
-                    _fixture.Create<Email>()));
+                    _fixture.Create<Email>(),
+                    _fixture.Create<string>()));
 
         // Assert
         act.Should().Throw<ArgumentException>("Pending steps not found (Parameter: stepsToApprove)");
@@ -188,7 +189,8 @@ public class WorkflowTests
                     Guid.NewGuid(), 
                     Guid.NewGuid(), 
                     "asd", 
-                    _fixture.Create<Email>()));
+                    _fixture.Create<Email>(),
+                    _fixture.Create<string>()));
 
         // Assert
         act.Should().Throw<ArgumentException>("Pending steps not found (Parameter: stepsToReject)");

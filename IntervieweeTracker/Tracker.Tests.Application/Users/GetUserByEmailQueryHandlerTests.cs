@@ -27,7 +27,8 @@ public class GetUserByEmailQueryHandlerTests
         var userRoleId = Guid.NewGuid();
         var userName = _fixture.Create<string>();
         var userEmail = _fixture.Create<Email>();
-        var user = User.Create(userRoleId, userName, userEmail);
+        var password = _fixture.Create<string>();
+        var user = User.Create(userRoleId, userName, userEmail, password);
 
         var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
         userRepositoryMock

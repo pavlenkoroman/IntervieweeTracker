@@ -18,7 +18,7 @@ public class RegisterUserCommandHandler
     public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var user = User.Create(request.RoleId, request.Name, new Email(request.Email));
+        var user = User.Create(request.RoleId, request.Name, new Email(request.Email), request.Password);
         await _tenant.Users.Create(user, cancellationToken);
 
         await _tenant.CommitAsync(cancellationToken);

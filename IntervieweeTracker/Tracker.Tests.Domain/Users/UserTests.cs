@@ -23,9 +23,10 @@ public class UserTests
         var roleId = Guid.NewGuid();
         var name = "John Doe";
         var email = _fixture.Create<Email>();
+        var password = _fixture.Create<string>();
 
         // Act
-        var user = User.Create(roleId, name, email);
+        var user = User.Create(roleId, name, email, password);
 
         // Assertion
         user.Should().NotBeNull();
@@ -42,9 +43,10 @@ public class UserTests
         var roleId = Guid.NewGuid();
         var name = "";
         var email = _fixture.Create<Email>();
+        var password = _fixture.Create<string>();
 
         // Act
-        Action action = () => User.Create(roleId, name, email);
+        Action action = () => User.Create(roleId, name, email, password);
 
         // Assert
         action.Should().Throw<ArgumentException>();
@@ -57,9 +59,10 @@ public class UserTests
         var emptyRoleId = Guid.Empty;
         var name = "John Doe";
         var email = _fixture.Create<Email>();
+        var password = _fixture.Create<string>();
 
         // Act
-        Action action = () => User.Create(emptyRoleId, name, email);
+        Action action = () => User.Create(emptyRoleId, name, email, password);
 
         // Assert
         action.Should().Throw<ArgumentException>().WithMessage("RoleId cannot be empty*");
@@ -72,9 +75,10 @@ public class UserTests
         var roleId = Guid.NewGuid();
         var emptyName = "";
         var email = _fixture.Create<Email>();
+        var password = _fixture.Create<string>();
 
         // Act
-        Action action = () => User.Create(roleId, emptyName, email);
+        Action action = () => User.Create(roleId, emptyName, email, password);
 
         // Assert
         action.Should().Throw<ArgumentException>().WithMessage("User name cannot be null*");
@@ -87,14 +91,50 @@ public class UserTests
         var roleId = Guid.NewGuid();
         var name = "John Doe";
         var email = _fixture.Create<Email>();
+        var password = _fixture.Create<string>();
 
         // Act
-        Action action = () => new User(Guid.Empty, roleId, name, email);
+        Action action = () => new User(Guid.Empty, roleId, name, email, password);
 
         // Assertion
         action
             .Should()
             .Throw<ArgumentException>()
             .WithMessage("Id cannot be empty (Parameter 'id')");
+    }
+
+    [Fact]
+    public void Verify_UserPasswordWithValidPassword_Should_Return_True()
+    {
+        // Arrange
+        var roleId = _fixture.Create<Guid>();
+        var name = _fixture.Create<string>();
+        var email = _fixture.Create<Email>();
+        var password = _fixture.Create<string>();
+        var user = User.Create(roleId, name, email, password);
+        
+        // Act
+        var isPasswordValid = user.VerifyPassword(password);
+        
+        // Arrange
+        isPasswordValid.Should().BeTrue();
+    }
+    
+    [Fact]
+    public void Verify_UserPasswordWithInvalidPassword_Should_Return_False()
+    {
+        // Arrange
+        var roleId = _fixture.Create<Guid>();
+        var name = _fixture.Create<string>();
+        var email = _fixture.Create<Email>();
+        var password = _fixture.Create<string>();
+        var user = User.Create(roleId, name, email, password);
+        
+        // Act
+        var invalidPassword = _fixture.Create<string>();
+        var isPasswordValid = user.VerifyPassword(invalidPassword);
+        
+        // Arrange
+        isPasswordValid.Should().BeFalse();
     }
 }

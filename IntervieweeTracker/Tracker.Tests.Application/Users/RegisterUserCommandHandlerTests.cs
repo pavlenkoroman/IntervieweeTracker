@@ -26,7 +26,8 @@ public class RegisterUserCommandHandlerTests
         var userRoleId = Guid.NewGuid();
         var userName = _fixture.Create<string>();
         var userEmail = _fixture.Create<Email>();
-        var user = User.Create(userRoleId, userName, userEmail);
+        var password = _fixture.Create<string>();
+        var user = User.Create(userRoleId, userName, userEmail, password);
 
         var userRepositoryMock = new Mock<IUserRepository>(MockBehavior.Strict);
         userRepositoryMock
@@ -43,7 +44,7 @@ public class RegisterUserCommandHandlerTests
             .Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
 
-        var command = new RegisterUserCommand(user.RoleId, user.Name, user.Email.Value);
+        var command = new RegisterUserCommand(user.RoleId, user.Name, user.Email.Value, password);
         var sut = new RegisterUserCommandHandler(tenantRepositoryMock.Object);
 
         // Act
