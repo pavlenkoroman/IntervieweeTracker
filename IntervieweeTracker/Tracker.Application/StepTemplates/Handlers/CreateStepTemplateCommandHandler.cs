@@ -6,11 +6,11 @@ namespace Tracker.Application.StepTemplates.Handlers;
 
 public class CreateStepTemplateCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public CreateStepTemplateCommandHandler(ITenantRepository tenant)
+    public CreateStepTemplateCommandHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<Guid> Handle(CreateStepTemplateCommand request, CancellationToken cancellationToken)
@@ -34,9 +34,11 @@ public class CreateStepTemplateCommandHandler
                 nameof(request.UserId) + " " + nameof(request.RoleId));
         }
 
-        await _tenant.StepTemplates.Create(stepTemplate, cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
 
-        await _tenant.CommitAsync(cancellationToken);
+        await tenant.StepTemplates.Create(stepTemplate, cancellationToken);
+
+        await tenant.CommitAsync(cancellationToken);
 
         return stepTemplate.Id;
     }

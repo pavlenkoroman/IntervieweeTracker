@@ -55,9 +55,16 @@ public class ApproveRequestStepCommandHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new ApproveRequestStepCommand(request.Id, user.Id);
-        var sut = new ApproveRequestStepCommandHandler(tenantRepositoryMock.Object);
+        var sut = new ApproveRequestStepCommandHandler(tenantRepositoryFactoryMock.Object);
 
         //Act
         await sut.Handle(query, new CancellationToken());

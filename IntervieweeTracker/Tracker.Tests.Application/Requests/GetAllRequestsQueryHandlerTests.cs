@@ -40,9 +40,16 @@ public class GetAllRequestsQueryHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new GetAllRequestsQuery();
-        var sut = new GetAllRequestsQueryHandler(tenantRepositoryMock.Object);
+        var sut = new GetAllRequestsQueryHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(query, new CancellationToken());

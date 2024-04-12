@@ -45,9 +45,16 @@ public class GetWorkflowTemplateByIdQueryHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new GetWorkflowTemplateByIdQuery(workflowTemplate.Id);
-        var sut = new GetWorkflowTemplateByIdQueryHandler(tenantRepositoryMock.Object);
+        var sut = new GetWorkflowTemplateByIdQueryHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(query, new CancellationToken());

@@ -6,9 +6,9 @@ namespace Tracker.Application.WorkflowTemplates.Handlers;
 
 public class GetWorkflowTemplateByIdQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenant;
 
-    public GetWorkflowTemplateByIdQueryHandler(ITenantRepository tenant)
+    public GetWorkflowTemplateByIdQueryHandler(ITenantRepositoryFactory tenant)
     {
         ArgumentNullException.ThrowIfNull(tenant);
 
@@ -21,8 +21,10 @@ public class GetWorkflowTemplateByIdQueryHandler
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        using var tenant = _tenant.GetTenant();
+
         var workflowTemplateCollection =
-            await _tenant.WorkflowTemplates.GetByIds(new[] { request.WorkflowTemplateId }, cancellationToken);
+            await tenant.WorkflowTemplates.GetByIds(new[] { request.WorkflowTemplateId }, cancellationToken);
 
         return workflowTemplateCollection.Single();
     }

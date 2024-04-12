@@ -38,9 +38,16 @@ public class GetAllRolesQueryHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+        
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new GetAllRolesQuery();
-        var sut = new GetAllRolesQueryHandler(tenantRepositoryMock.Object);
+        var sut = new GetAllRolesQueryHandler(tenantRepositoryFactoryMock.Object);
         
         // Act
         var result = await sut.Handle(query, new CancellationToken());

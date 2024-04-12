@@ -55,9 +55,16 @@ public class RejectRequestCommandHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new RejectRequestCommand(request.Id, user.Id);
-        var sut = new RejectRequestCommandHandler(tenantRepositoryMock.Object);
+        var sut = new RejectRequestCommandHandler(tenantRepositoryFactoryMock.Object);
 
         //Act
         await sut.Handle(query, new CancellationToken());

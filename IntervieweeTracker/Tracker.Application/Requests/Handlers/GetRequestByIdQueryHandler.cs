@@ -6,20 +6,21 @@ namespace Tracker.Application.Requests.Handlers;
 
 public class GetRequestByIdQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public GetRequestByIdQueryHandler(ITenantRepository tenant)
+    public GetRequestByIdQueryHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<Request> Handle(GetRequestByIdQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var requestsCollection = await _tenant.Requests.GetByIds(new[] { request.RequestId }, cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+        var requestsCollection = await tenant.Requests.GetByIds(new[] { request.RequestId }, cancellationToken);
 
         return requestsCollection.Single();
     }

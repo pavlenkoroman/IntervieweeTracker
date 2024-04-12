@@ -1,6 +1,6 @@
 namespace Tracker.Application.Repositories;
 
-public interface ITenantRepository
+public interface ITenantRepository : IDisposable
 {
     IUserRepository Users { get; }
     IRoleRepository Roles { get; }

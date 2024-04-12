@@ -44,9 +44,16 @@ public class GetUserByEmailQueryHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+        
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new GetUserByEmailQuery(userEmail.Value);
-        var sut = new GetUserByEmailQueryHandler(tenantRepositoryMock.Object);
+        var sut = new GetUserByEmailQueryHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(query, new CancellationToken());

@@ -5,23 +5,25 @@ namespace Tracker.Application.Requests.Handlers;
 
 public class RestartRequestCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public RestartRequestCommandHandler(ITenantRepository tenant)
+    public RestartRequestCommandHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task Handle(RestartRequestCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var interviewRequests = await _tenant.Requests.GetByIds(new[] { request.RequestId }, cancellationToken);
-        var users = await _tenant.Users.GetByIds(new[] { request.UserId }, cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        var interviewRequests = await tenant.Requests.GetByIds(new[] { request.RequestId }, cancellationToken);
+        var users = await tenant.Users.GetByIds(new[] { request.UserId }, cancellationToken);
 
         interviewRequests.Single().RestartInterview(users.Single());
-        await _tenant.CommitAsync(cancellationToken);
+        await tenant.CommitAsync(cancellationToken);
     }
 }

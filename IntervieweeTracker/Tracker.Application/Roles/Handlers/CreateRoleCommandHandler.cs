@@ -6,24 +6,26 @@ namespace Tracker.Application.Roles.Handlers;
 
 public class CreateRoleCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public CreateRoleCommandHandler(ITenantRepository tenant)
+    public CreateRoleCommandHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<Guid> Handle(CreateRoleCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
         var role = Role.Create(request.Title);
 
-        await _tenant.Roles.Create(role, cancellationToken);
+        await tenant.Roles.Create(role, cancellationToken);
 
-        await _tenant.CommitAsync(cancellationToken);
+        await tenant.CommitAsync(cancellationToken);
 
         return role.Id;
     }

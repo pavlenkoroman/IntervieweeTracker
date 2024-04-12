@@ -6,20 +6,21 @@ namespace Tracker.Application.Roles.Handlers;
 
 public class GetRoleByIdQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public GetRoleByIdQueryHandler(ITenantRepository tenant)
+    public GetRoleByIdQueryHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<Role> Handle(GetRoleByIdQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var rolesCollection = await _tenant.Roles.GetByIds(new[] { request.RoleId }, cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+        var rolesCollection = await tenant.Roles.GetByIds(new[] { request.RoleId }, cancellationToken);
         return rolesCollection.Single();
     }
 }

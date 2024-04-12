@@ -49,11 +49,16 @@ public class CreateStepTemplateCommandHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
 
-        var tenantRepository = tenantRepositoryMock.Object;
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var command = new CreateStepTemplateCommand(stepTemplate.Title, stepTemplate.Order, stepTemplate.UserId, null);
-        var sut = new CreateStepTemplateCommandHandler(tenantRepository);
+        var sut = new CreateStepTemplateCommandHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(command, new CancellationToken());
@@ -72,7 +77,7 @@ public class CreateStepTemplateCommandHandlerTests
 
         Assert.IsType<Guid>(result);
     }
-    
+
     [Fact]
     public async Task CreateStepTemplateByRoleId_Should_CompleteSuccessfully()
     {
@@ -102,11 +107,16 @@ public class CreateStepTemplateCommandHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
 
-        var tenantRepository = tenantRepositoryMock.Object;
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var command = new CreateStepTemplateCommand(stepTemplate.Title, stepTemplate.Order, null, stepTemplate.RoleId);
-        var sut = new CreateStepTemplateCommandHandler(tenantRepository);
+        var sut = new CreateStepTemplateCommandHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(command, new CancellationToken());
@@ -125,7 +135,7 @@ public class CreateStepTemplateCommandHandlerTests
 
         Assert.IsType<Guid>(result);
     }
-    
+
     [Fact]
     public async Task CreateStepTemplate_WithoutRoleOrUser_Should_ThrowException()
     {
@@ -155,15 +165,20 @@ public class CreateStepTemplateCommandHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
 
-        var tenantRepository = tenantRepositoryMock.Object;
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var command = new CreateStepTemplateCommand(stepTemplate.Title, stepTemplate.Order, null, null);
-        var sut = new CreateStepTemplateCommandHandler(tenantRepository);
+        var sut = new CreateStepTemplateCommandHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var act = async () => await sut.Handle(command, new CancellationToken());
-        
+
         await act.Should().ThrowAsync<ArgumentException>()
             .WithMessage("At least one between User Id and Role Id must be not null (Parameter 'UserId RoleId')");
     }

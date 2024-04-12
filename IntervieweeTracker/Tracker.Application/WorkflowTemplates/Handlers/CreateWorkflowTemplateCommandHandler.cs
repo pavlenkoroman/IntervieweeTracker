@@ -6,28 +6,30 @@ namespace Tracker.Application.WorkflowTemplates.Handlers;
 
 public sealed record CreateWorkflowTemplateCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public CreateWorkflowTemplateCommandHandler(ITenantRepository tenant)
+    public CreateWorkflowTemplateCommandHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<Guid> Handle(CreateWorkflowTemplateCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var stepTemplates = await _tenant.StepTemplates.GetByIds(
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        var stepTemplates = await tenant.StepTemplates.GetByIds(
             request.StepTemplateIds,
             cancellationToken);
 
         var workflowTemplate = WorkflowTemplate.Create(request.Title, stepTemplates);
 
-        await _tenant.WorkflowTemplates.Create(workflowTemplate, cancellationToken);
+        await tenant.WorkflowTemplates.Create(workflowTemplate, cancellationToken);
 
-        await _tenant.CommitAsync(cancellationToken);
+        await tenant.CommitAsync(cancellationToken);
 
         return workflowTemplate.Id;
     }

@@ -68,12 +68,19 @@ public class UpdateWorkflowTemplateCommandHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var command = new UpdateWorkflowTemplateCommand(
             workflowTemplate.Id,
             expectedUpdatedTitle,
             expectedUpdatedStepIds);
-        var sut = new UpdateWorkflowTemplateCommandHandler(tenantRepositoryMock.Object);
+        var sut = new UpdateWorkflowTemplateCommandHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(command, new CancellationToken());

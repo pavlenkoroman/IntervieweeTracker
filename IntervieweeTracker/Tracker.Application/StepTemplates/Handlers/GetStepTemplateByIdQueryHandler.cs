@@ -6,20 +6,22 @@ namespace Tracker.Application.StepTemplates.Handlers;
 
 public class GetStepTemplateByIdQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public GetStepTemplateByIdQueryHandler(ITenantRepository tenant)
+    public GetStepTemplateByIdQueryHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<StepTemplate> Handle(GetStepByIdQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var steps = await _tenant.StepTemplates
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        var steps = await tenant.StepTemplates
             .GetByIds(new[] { request.StepId }, cancellationToken)
             .ConfigureAwait(false);
 
