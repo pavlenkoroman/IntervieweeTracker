@@ -23,10 +23,13 @@ public class LoginQueryHandler
 
         var user = await tenant.Users.GetByEmail(new Email(request.Email), cancellationToken);
 
-        if (user is null) throw new ArgumentException("Current user does not exist", nameof(user));
+        if (user is null) throw new ArgumentException("Login failed", nameof(LoginQuery));
 
-        await tenant.Users.Login(user, cancellationToken);
+        if (user.VerifyPassword(request.Password))
+        {
+            return user.Id;
+        }
 
-        return user.Id;
+        throw new ArgumentException("Login failed", nameof(LoginQuery));
     }
 }
