@@ -6,24 +6,26 @@ namespace Tracker.Application.Users.Handlers;
 
 public class LoginQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public LoginQueryHandler(ITenantRepository tenant)
+    public LoginQueryHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<Guid> Handle(LoginQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var user = await _tenant.Users.GetByEmail(new Email(request.Email), cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        var user = await tenant.Users.GetByEmail(new Email(request.Email), cancellationToken);
 
         if (user is null) throw new ArgumentException("Current user does not exist", nameof(user));
 
-        await _tenant.Users.Login(user, cancellationToken);
+        await tenant.Users.Login(user, cancellationToken);
 
         return user.Id;
     }

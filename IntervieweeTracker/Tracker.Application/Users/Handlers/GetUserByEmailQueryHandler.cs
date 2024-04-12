@@ -6,19 +6,20 @@ namespace Tracker.Application.Users.Handlers;
 
 public class GetUserByEmailQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public GetUserByEmailQueryHandler(ITenantRepository tenant)
+    public GetUserByEmailQueryHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<User?> Handle(GetUserByEmailQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _tenant.Users.GetByEmail(new Email(request.Email), cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+        return await tenant.Users.GetByEmail(new Email(request.Email), cancellationToken);
     }
 }

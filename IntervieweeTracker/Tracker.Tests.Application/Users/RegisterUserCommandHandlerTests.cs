@@ -43,9 +43,16 @@ public class RegisterUserCommandHandlerTests
         tenantRepositoryMock
             .Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var command = new RegisterUserCommand(user.RoleId, user.Name, user.Email.Value, password);
-        var sut = new RegisterUserCommandHandler(tenantRepositoryMock.Object);
+        var sut = new RegisterUserCommandHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(command, new CancellationToken());

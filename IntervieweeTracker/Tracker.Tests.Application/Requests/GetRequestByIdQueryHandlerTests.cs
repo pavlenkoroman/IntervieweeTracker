@@ -38,13 +38,20 @@ public class GetRequestByIdQueryHandlerTests
         tenantRepositoryMock
             .Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new GetRequestByIdQuery(request.Id);
-        var sut = new GetRequestByIdQueryHandler(tenantRepositoryMock.Object);
-        
+        var sut = new GetRequestByIdQueryHandler(tenantRepositoryFactoryMock.Object);
+
         // Act
         var result = await sut.Handle(query, new CancellationToken());
-        
+
         // Assert
         requestRepositoryMock.Verify(
             repository => repository

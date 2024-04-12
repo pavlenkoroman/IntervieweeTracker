@@ -49,9 +49,16 @@ public class LoginQueryHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new LoginQuery(userEmail.Value);
-        var sut = new LoginQueryHandler(tenantRepositoryMock.Object);
+        var sut = new LoginQueryHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(query, new CancellationToken());
@@ -93,9 +100,16 @@ public class LoginQueryHandlerTests
         tenantRepositoryMock
             .Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new LoginQuery(userEmail.Value);
-        var sut = new LoginQueryHandler(tenantRepositoryMock.Object);
+        var sut = new LoginQueryHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var action = async () => await sut.Handle(query, new CancellationToken());

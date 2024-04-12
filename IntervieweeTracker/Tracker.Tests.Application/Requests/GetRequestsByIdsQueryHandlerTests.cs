@@ -44,9 +44,16 @@ public class GetRequestsByIdsQueryHandlerTests
         tenantRepositoryMock
             .Setup(tenantRepository => tenantRepository.CommitAsync(It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
+        tenantRepositoryMock
+            .Setup(tenant => tenant.Dispose()).Verifiable();
+
+        var tenantRepositoryFactoryMock = new Mock<ITenantRepositoryFactory>();
+        tenantRepositoryFactoryMock
+            .Setup(tenantRepositoryFactory => tenantRepositoryFactory.GetTenant())
+            .Returns(tenantRepositoryMock.Object);
 
         var query = new GetRequestsByIdsQuery(requestsIds);
-        var sut = new GetRequestsByIdsQueryHandler(tenantRepositoryMock.Object);
+        var sut = new GetRequestsByIdsQueryHandler(tenantRepositoryFactoryMock.Object);
 
         // Act
         var result = await sut.Handle(query, new CancellationToken());

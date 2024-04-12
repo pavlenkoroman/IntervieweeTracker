@@ -6,13 +6,13 @@ namespace Tracker.Application.WorkflowTemplates.Handlers;
 
 public class GetAllWorkflowTemplatesQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public GetAllWorkflowTemplatesQueryHandler(ITenantRepository tenant)
+    public GetAllWorkflowTemplatesQueryHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<IReadOnlyCollection<WorkflowTemplate>> Handle(
@@ -21,6 +21,8 @@ public class GetAllWorkflowTemplatesQueryHandler
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _tenant.WorkflowTemplates.GetAll(cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        return await tenant.WorkflowTemplates.GetAll(cancellationToken);
     }
 }

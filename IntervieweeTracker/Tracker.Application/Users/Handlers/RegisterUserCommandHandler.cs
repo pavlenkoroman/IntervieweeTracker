@@ -6,22 +6,25 @@ namespace Tracker.Application.Users.Handlers;
 
 public class RegisterUserCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public RegisterUserCommandHandler(ITenantRepository tenant)
+    public RegisterUserCommandHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var user = User.Create(request.RoleId, request.Name, new Email(request.Email), request.Password);
-        await _tenant.Users.Create(user, cancellationToken);
 
-        await _tenant.CommitAsync(cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+        
+        var user = User.Create(request.RoleId, request.Name, new Email(request.Email), request.Password);
+        await tenant.Users.Create(user, cancellationToken);
+
+        await tenant.CommitAsync(cancellationToken);
 
         return user.Id;
     }

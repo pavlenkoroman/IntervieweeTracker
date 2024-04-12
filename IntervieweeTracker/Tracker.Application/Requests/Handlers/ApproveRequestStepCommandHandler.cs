@@ -5,29 +5,31 @@ namespace Tracker.Application.Requests.Handlers;
 
 public class ApproveRequestStepCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public ApproveRequestStepCommandHandler(ITenantRepository tenant)
+    public ApproveRequestStepCommandHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task Handle(ApproveRequestStepCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var interviewRequest = await _tenant.Requests.GetByIds(
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        var interviewRequest = await tenant.Requests.GetByIds(
                 new[] { request.RequestId },
                 cancellationToken)
             .ConfigureAwait(false);
 
-        var user = await _tenant.Users
+        var user = await tenant.Users
             .GetByIds(new[] { request.UserId }, cancellationToken)
             .ConfigureAwait(false);
 
         interviewRequest.Single().Approve(user.Single());
-        await _tenant.CommitAsync(cancellationToken);
+        await tenant.CommitAsync(cancellationToken);
     }
 }

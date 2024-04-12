@@ -5,26 +5,28 @@ namespace Tracker.Application.Requests.Handlers;
 
 public class RejectRequestCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public RejectRequestCommandHandler(ITenantRepository tenant)
+    public RejectRequestCommandHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task Handle(RejectRequestCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var interviewRequestCollection = await _tenant.Requests
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        var interviewRequestCollection = await tenant.Requests
             .GetByIds(new[] { request.RequestId }, cancellationToken)
             .ConfigureAwait(false);
 
-        var userCollection = await _tenant.Users.GetByIds(new[] { request.UserId }, cancellationToken);
+        var userCollection = await tenant.Users.GetByIds(new[] { request.UserId }, cancellationToken);
 
         interviewRequestCollection.Single().Reject(userCollection.Single());
-        await _tenant.CommitAsync(cancellationToken);
+        await tenant.CommitAsync(cancellationToken);
     }
 }

@@ -6,13 +6,13 @@ namespace Tracker.Application.Requests.Handlers;
 
 public class GetAllRequestsQueryHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenantRepositoryFactory;
 
-    public GetAllRequestsQueryHandler(ITenantRepository tenant)
+    public GetAllRequestsQueryHandler(ITenantRepositoryFactory tenantRepositoryFactory)
     {
-        ArgumentNullException.ThrowIfNull(tenant);
+        ArgumentNullException.ThrowIfNull(tenantRepositoryFactory);
 
-        _tenant = tenant;
+        _tenantRepositoryFactory = tenantRepositoryFactory;
     }
 
     public async Task<IReadOnlyCollection<Request>> Handle(
@@ -21,6 +21,8 @@ public class GetAllRequestsQueryHandler
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await _tenant.Requests.GetAll(cancellationToken);
+        using var tenant = _tenantRepositoryFactory.GetTenant();
+
+        return await tenant.Requests.GetAll(cancellationToken);
     }
 }

@@ -5,9 +5,9 @@ namespace Tracker.Application.WorkflowTemplates.Handlers;
 
 public class UpdateWorkflowTemplateCommandHandler
 {
-    private readonly ITenantRepository _tenant;
+    private readonly ITenantRepositoryFactory _tenant;
 
-    public UpdateWorkflowTemplateCommandHandler(ITenantRepository tenant)
+    public UpdateWorkflowTemplateCommandHandler(ITenantRepositoryFactory tenant)
     {
         ArgumentNullException.ThrowIfNull(tenant);
 
@@ -18,12 +18,12 @@ public class UpdateWorkflowTemplateCommandHandler
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var steps = await _tenant.StepTemplates.GetByIds(
-            request.StepTemplateIds,
-            cancellationToken);
+        using var tenant = _tenant.GetTenant();
+
+        var steps = await tenant.StepTemplates.GetByIds(request.StepTemplateIds, cancellationToken);
 
         var workflowTemplateCollection =
-            await _tenant.WorkflowTemplates.GetByIds(new[] { request.WorkflowTemplateId }, cancellationToken);
+            await tenant.WorkflowTemplates.GetByIds(new[] { request.WorkflowTemplateId }, cancellationToken);
 
         var workflowTemplate = workflowTemplateCollection.Single();
 
@@ -34,9 +34,9 @@ public class UpdateWorkflowTemplateCommandHandler
 
         workflowTemplate.UpdateSteps(steps);
 
-        await _tenant.WorkflowTemplates.Update(workflowTemplate, cancellationToken);
+        await tenant.WorkflowTemplates.Update(workflowTemplate, cancellationToken);
 
-        await _tenant.CommitAsync(cancellationToken);
+        await tenant.CommitAsync(cancellationToken);
 
         return workflowTemplate.Id;
     }
