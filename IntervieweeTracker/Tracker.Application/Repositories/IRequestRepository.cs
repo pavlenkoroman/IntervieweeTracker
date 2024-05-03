@@ -9,6 +9,4 @@ public interface IRequestRepository
     Task<IReadOnlyCollection<Request>> GetByIds(
         IReadOnlyCollection<Guid> requestIds,
         CancellationToken cancellationToken);
-
-    Task<IReadOnlyCollection<Request>> GetAll(CancellationToken cancellationToken);
 }

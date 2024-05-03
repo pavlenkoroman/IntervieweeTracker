@@ -10,6 +10,4 @@ public interface IWorkflowTemplateRepository
     Task<IReadOnlyCollection<WorkflowTemplate>> GetByIds(
         IReadOnlyCollection<Guid> workflowTemplateIds,
         CancellationToken cancellationToken);
-
-    Task<IReadOnlyCollection<WorkflowTemplate>> GetAll(CancellationToken cancellationToken);
 }
