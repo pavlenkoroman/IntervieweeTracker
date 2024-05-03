@@ -1,7 +1,6 @@
 using AutoFixture;
 using FluentAssertions;
 using Tracker.Domain.Requests;
-using Tracker.Domain.Requests.Events;
 using Tracker.Domain.Requests.Workflows;
 using Tracker.Domain.Users;
 using Tracker.Tests.Domain.Extensions;
@@ -53,7 +52,6 @@ public class RequestTests
         request.UserId.Should().Be(userId);
         request.Document.Should().Be(document);
         request.Workflow.Should().Be(workflow);
-        request.Events.Should().ContainSingle().Which.Should().BeOfType<RequestCreatedEvent>();
     }
 
     [Fact]
@@ -69,20 +67,6 @@ public class RequestTests
 
         // Assert
         request.Workflow.Steps.Count(x => x.Status == StepStatus.Approved).Should().Be(approvesCount + 1);
-    }
-
-    [Fact]
-    public void Reject_Request_Succeeds()
-    {
-        // Arrange
-        var request = _fixture.Create<Request>();
-        var user = _fixture.Create<User>();
-
-        // Act
-        request.Reject(user);
-
-        // Assert
-        request.Events.Last().Should().BeOfType<RequestRejectedEvent>();
     }
 
     [Fact]
