@@ -8,7 +8,7 @@ public class User
     public Guid RoleId { get; private set; }
     public string Name { get; private init; }
     public Email Email { get; private init; }
-    public string PasswordHash { get; set; }
+    public string PasswordHash { get; private set; }
 
     public User(Guid id, Guid roleId, string name, Email email, string password)
     {

@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Application", "Trac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Tests.Application", "Tracker.Tests.Application\Tracker.Tests.Application.csproj", "{F13F157C-20C6-48AB-9987-06A7CE82074F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{E27D431B-C11E-462B-B033-BC23A5676B95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracker.Infrastructure", "Tracker.Infrastructure\Tracker.Infrastructure.csproj", "{B747E644-794C-4B68-B5AF-972C2C496FB1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +28,7 @@ Global
 		{D88C4472-10EB-44E3-84BF-868E9AD998F6} = {8EEA867A-8F8D-4BEA-B649-A34FF9A1ACCA}
 		{3D85B2E9-0F74-4AB8-AC56-53F23A5465DB} = {FA9538F5-3D63-40B1-B725-BEADDF2FB238}
 		{F13F157C-20C6-48AB-9987-06A7CE82074F} = {8EEA867A-8F8D-4BEA-B649-A34FF9A1ACCA}
+		{B747E644-794C-4B68-B5AF-972C2C496FB1} = {E27D431B-C11E-462B-B033-BC23A5676B95}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{6C9189FA-AADA-4965-95BE-CA4AF4D1FD75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -42,5 +47,9 @@ Global
 		{F13F157C-20C6-48AB-9987-06A7CE82074F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F13F157C-20C6-48AB-9987-06A7CE82074F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F13F157C-20C6-48AB-9987-06A7CE82074F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B747E644-794C-4B68-B5AF-972C2C496FB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B747E644-794C-4B68-B5AF-972C2C496FB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B747E644-794C-4B68-B5AF-972C2C496FB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B747E644-794C-4B68-B5AF-972C2C496FB1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
